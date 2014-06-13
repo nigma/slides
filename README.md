@@ -1,4 +1,4 @@
 slides
 ======
 
-- [Python Meetup Łódź - Przegląd bibliotek Pythona](https://nigma.github.io/slides/python-meetup-lodz/)
+- [Python Łódź Meetup - Przegląd bibliotek Pythona](https://nigma.github.io/slides/python-lodz-meetup/)
