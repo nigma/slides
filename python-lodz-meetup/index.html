@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Przegląd bibliotek Pythona - Python Łódź Meetup 2014.06.12</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz&subset=latin,latin-ext);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic&subset=latin,latin-ext);
+        @import url(https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic,700italic&subset=latin,latin-ext);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic&subset=latin,latin-ext);
+        body {
+            font-family: 'Droid Serif', 'Noto Serif', serif;
+            font-size: medium;
+            transition: -webkit-transform 0.8s ease;
+        }
+        ul > li { line-height: 1.5em; margin-bottom: 0.3em; }
+        ul > li > p { margin-bottom: 1px; margin-top: 1px; }
+        li ul > li { line-height: 1.3em; }
+        .short ul > li { line-height: 1.1em; margin-bottom: 0.7em; }
+        .short ul > li li { line-height: 1.1em; margin-bottom: 0.2em; }
+        .very-short ul > li { line-height: 1.1em; font-size: 90%; margin-bottom: 0; }
+        .spacey ul > li { line-height: 1.5em; margin-bottom: 1em; }
+        h1, h2, h3, h4 { font-family: 'Yanone Kaffeesatz', sans-serif; font-weight: 400; }
+        a { color: #f52c76; text-decoration: none; }
+        h4 a { color: #a6a6a6; text-decoration: none; }
+        code { border-radius: 5px; }
+        ul > li code { line-height: 1.1;}
+        .center code { text-align: left; width: 50%; margin-left: auto; margin-right: auto; }
+        .light .remark-code-line { color: whitesmoke; }
+        .inverse {
+            background: #272822;
+            color: #777872;
+            text-shadow: 0 0 20px #333;
+            background: -webkit-radial-gradient(center, circle cover, #555a5f 0%, #1c1e20 100%);
+        }
+        .inverse h1, .inverse h2 {
+            color: #f3f3f3;
+            line-height: 0.8em;
+        }
+        .front h2 { margin-bottom: 15px; padding-bottom: 0; }
+        .front h4 { margin-top: 0; padding-bottom: 0; }
+        .last h1 a { color: #f3f3f3; }
+        .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+        .small code { font-size: 70%; }
+        textarea { display: none; }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://gnab.github.io/remark/downloads/remark-0.6.5.min.js" type="text/javascript"></script>
+</head>
+<body>
+<textarea id="source">
+class: center middle inverse front
+
+# Przegląd bibliotek Pythona
+## [Filip Wasilewski](http://en.ig.ma/)
+#### [en.ig.ma](http://en.ig.ma/), [ThinkApps](http://thinkapps.com)
+
+---
+# Biblioteka, pakiet, co to jest?
+
+- Pakiet to zbiór modułów, funkcji i klas realizujących określone zadania, np.:
+
+```python
+>>> import json
+>>> json.dumps({"hi": "there"})
+'{"hi": "there"}'
+```
+
+- Moduły dostępne są wraz ze standardową instalacją Pythona oraz do pobrania z internetu
+
+---
+class: short
+
+# Biblioteka Standardowa
+
+- Jest częścią standardowej instalacji Pythona
+
+- Zbiór modułów przydatnych w codziennej pracy
+
+    - collections (namedtuple, OrderedDict, Counter)
+    - decimal
+    - itertools
+    - json
+    - logging
+    - math
+    - multiprocessing
+    - os.path
+    - random
+    - re
+    - sys
+    - ...
+
+- [Python 2.7 Module Index](https://docs.python.org/2.7/py-modindex.html)
+- [Python 3.4 Module Index](https://docs.python.org/3.4/py-modindex.html)
+
+---
+
+# Pakiety tworzone przez użytkowników
+
+- [pypi.python.org](https://pypi.python.org/pypi) (ponad 44 000 bibliotek)
+- [GitHub](https://github.com/)
+- [Bitbucket](https://bitbucket.org/)
+- [djangopackages.com](https://www.djangopackages.com/)
+
+```python
+import lxml
+
+from django.db import models
+```
+
+---
+
+# Pakiet od środka
+
+Pakiet to najczęściej zbiór modułów..
+
+.light[```terminal
++---hello
+|   +---__init__.py
+|   +---stuff.py
+|   +---utils.py
+|
++---setup.py
+```]
+
+---
+
+# Pakiet od środka
+
+..wraz ze skryptem instalacyjnym ``setup.py``*
+
+```python
+from setuptools import setup
+
+setup(
+    name="hello",
+    version = "1.0",
+    description="This is your awesome module",
+    author="You",
+    author_email="your@email",
+    packages = ["hello"],
+
+    install_requires=[
+        "django>=1.6",
+    ],
+    keywords="hello",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent"
+    ],
+)
+```
+
+---
+
+# Jak pobierać i instalować pakiety
+
+1. Tworzenie osobnego środowiska dla projektu za pomocą
+   [virtualenv](http://virtualenv.readthedocs.org/en/latest/virtualenv.html#installation)
+   lub [pyvenv](https://docs.python.org/dev/library/venv.html) (3.3+)
+
+    ```terminal
+    $ virtualenv ENV
+
+    $ source ./ENV/bin/activate  # Aktywacja środowiska - Linux
+    c:\> ./ENV/Scripts/activate  # Aktywacja środowiska - Windows
+    ```
+
+2. Plik ``requirements.txt``
+
+    ```text
+    Django==1.6.5
+    psycopg2==2.5.3
+    ```
+
+3. Instalacja przy pomocy [pip](https://pypi.python.org/pypi/pip)
+
+    ```terminal
+    $ pip install -r requirements.txt
+
+    $ pip install Django
+    ```
+
+---
+class: inverse middle center
+
+# Przegląd wybranych bibliotek
+
+---
+class: inverse middle center
+
+# Requests
+
+---
+name: requests
+
+# Requests
+
+## HTTP
+
+HTTP jest podstawowym protokołem internetu.
+
+--
+
+Jest w miarę dobrze udokumentowany:
+
+- RFC 1945 (HTTP 1.0, 1996)
+- RFC 2068 (HTTP/1.1, 1997)
+- RFC 2616 (HTTP/1.1, 1999)
+--
+
+- RFC 2817 (TLS, 2000)
+- RFC 2818 (HTTP Over TLS, 2000)
+- RFC 5785 (Defining URIs, 2010)
+- RFC 6266 (2011)
+- RFC 6585 (2012)
+--
+
+- RFC 7230, 7231, 7232, 7233, 7234, 7235..
+
+---
+
+# Requests
+
+W związku z tym istnieje wiele pakietów do jego obsługi, również w bibliotece standardowej (2.7*):
+
+- urllib
+- urllib2
+- urlparse
+- Cookie
+- cookielib
+- httplib
+- json
+- ...
+
+---
+
+# Requests
+
+Dlaczego więc potrzebujemy jeszcze jednej biblioteki do obsługi HTTP?
+
+---
+
+# Requests
+
+*Python-requests* jest bardzo prosta w użyciu:
+
+```python
+>>> r = requests.get("https://api.github.com/user", auth=("user", "pass"))
+```
+
+---
+
+# Requests
+
+*Python-requests* jest bardzo prosta w użyciu:
+
+```python
+>>> r = requests.get("https://api.github.com/user", auth=("user", "pass"))
+
+>>> r.status_code
+200
+```
+
+---
+
+# Requests
+
+*Python-requests* jest bardzo prosta w użyciu:
+
+```python
+>>> r = requests.get("https://api.github.com/user", auth=("user", "pass"))
+
+>>> r.status_code
+200
+
+>>> r.headers["content-type"]
+"application/json; charset=utf8"
+
+>>> r.encoding
+"utf-8"
+```
+
+---
+
+# Requests
+
+*Python-requests* jest bardzo prosta w użyciu:
+
+```python
+>>> r = requests.get("https://api.github.com/user", auth=("user", "pass"))
+
+>>> r.status_code
+200
+
+>>> r.headers["content-type"]
+"application/json; charset=utf8"
+
+>>> r.encoding
+"utf-8"
+
+>>> r.text
+u'{"type":"User"...'
+
+>>> r.json()
+{u"private_gists": 419, u"total_private_repos": 77, ...}
+```
+
+---
+# Requests
+
+Dla porównania podobny kod z wykorzystaniem ``urllib2``:
+
+```python
+>>> import urllib2
+>>> req = urllib2.Request("https://api.github.com")
+>>> password_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
+>>> password_manager.add_password(None, gh_url, "user", "pass")
+>>> auth_manager = urllib2.HTTPBasicAuthHandler(password_manager)
+>>> opener = urllib2.build_opener(auth_manager)
+>>> urllib2.install_opener(opener)
+>>> handler = urllib2.urlopen(req)
+
+>>> print handler.getcode()
+200
+
+>>> print handler.headers.getheader("content-type")
+"application/json; charset=utf8"
+```
+
+---
+
+# Requests
+
+API python-requests wygląda dużo lepiej:
+
+```python
+# zapytanie GET + autoryzacja
+
+requests.get("https://api.github.com/user", auth=("user", "pass"))
+```
+
+--
+
+```python
+# przesyłanie parametrów "?limit=100&offset=10"
+
+params = {"limit": 100, "offset": 10}
+
+requests.get("http://httpbin.org/get", params=params)
+```
+
+--
+
+```python
+# wysyłanie danych w formacie json
+
+data = json.dumps({"hi": "there"}
+headers = {"content-type": "application/json"}
+
+requests.post("http://httpbin.org/post", data=data, headers=headers)
+```
+
+
+---
+
+# Requests
+
+- Sprawdzanie certyfikatów SSL
+- Keep-Alive, Connection Pooling
+- Sesje i ciasteczka
+- Uwierzytelnianie Basic/Digest auth
+- Automatyczna dekompresja
+- Unicode, JSON
+- Multipart file upload
+- [python-requests.org](http://docs.python-requests.org/)
+
+---
+class: inverse center middle
+
+# HTTPie
+### Lepszy cURL
+---
+
+# HTTPie
+
+- lepszy cURL
+- zbudowany w oparciu o bibliotekę ``requests``
+- prosta składnia poleceń
+
+  `$ http GET httpie.org`
+- formatowanie i kolorowanie odpowiedzi
+- obsługa JSON
+- [httpie.org](http://httpie.org/)
+
+---
+# HTTPie
+
+```terminal
+$ http https://api.github.com/users/nigma
+
+{
+    <span style="color:#ddd;">"login"</span>: <span style="color:#a6e22e;">"nigma"</span>,
+    <span style="color:#ddd;">"blog"</span>: <span style="color:#a6e22e;">"en.ig.ma"</span>,
+    <span style="color:#ddd;">"company"</span>: <span style="color:#a6e22e;">"en.ig.ma"</span>,
+    <span style="color:#ddd;">"email"</span>: <span style="color:#a6e22e;">"en@ig.ma"</span>,
+    <span style="color:#ddd;">"avatar_url"</span>: <span style="color:#a6e22e;">"https://avatars.githubusercontent.com/u/34537?"</span>,
+    <span style="color:#ddd;">"created_at"</span>: <span style="color:#a6e22e;">"2008-11-14T22:47:12Z"</span>,
+    ...
+}
+```
+
+---
+# HTTPie
+
+```terminal
+$ http --verbose https://api.github.com/users/nigma
+
+<span style="color:#00cc00;">GET</span> <span style="text-decoration:underline;"></span><span style="color:#00E6E6;text-decoration:underline;">/users/nigma</span> <span style="color:blue;">HTTP</span>/<span style="color:blue;">1.1</span>
+<span style="color:#00E6E6;">Accept</span>: <span style="color:#CCCC00;">*/*</span>
+<span style="color:#00E6E6;">Accept-Encoding</span>: <span style="color:#CCCC00;">gzip, deflate</span>
+<span style="color:#00E6E6;">Host</span>: <span style="color:#CCCC00;">api.github.com</span>
+<span style="color:#00E6E6;">User-Agent</span>: <span style="color:#CCCC00;">HTTPie/0.8.0</span>
+
+
+<span style="color:blue;">HTTP</span>/<span style="color:blue;">1.1</span> <span style="color:blue;">200</span> <span style="color:#00E6E6;">OK</span>
+<span style="color:#00E6E6;">Cache-Control</span>: <span style="color:#CCCC00;">public, max-age=60, s-maxage=60</span>
+<span style="color:#00E6E6;">Content-Encoding</span>: <span style="color:#CCCC00;">gzip</span>
+<span style="color:#00E6E6;">Content-Type</span>: <span style="color:#CCCC00;">application/json; charset=utf-8</span>
+<span style="color:#00E6E6;">Server</span>: <span style="color:#cccc00;">GitHub.com</span>
+<span style="color:#00E6E6;">Status</span>: <span style="color:#CCCC00;">200 OK</span>
+<span style="color:#00E6E6;">Transfer-Encoding</span>: <span style="color:#CCCC00;">chunked</span>
+
+{
+    <span style="color:#ddd;">"login"</span>: <span style="color:#a6e22e;">"nigma"</span>,
+    <span style="color:#ddd;">"blog"</span>: <span style="color:#a6e22e;">"en.ig.ma"</span>,
+    <span style="color:#ddd;">"company"</span>: <span style="color:#a6e22e;">"en.ig.ma"</span>,
+    ...
+}
+
+```
+---
+
+class: inverse center middle
+
+# lxml
+
+---
+
+# lxml
+
+- Wszystko czego potrzeba do przetwarzania XML i HTML
+
+- Zgrabnie opakowuje ``libxml2`` and ``libxslt``
+
+- Podstawowe API wzorowane na ``ElementTree`` (etree)
+
+- Ponadto SAX, lxml.objectify
+
+- Oraz obsługa XPath, Relax NG, XML Schema, XSLT, c14n i wszystkiego, co najlepsze w XML
+
+- [lxml.de](http://lxml.de/)
+
+---
+# lxml
+
+Przykład:
+
+```python
+import requests
+import lxml.html
+
+data = requests.get("http://en.ig.ma/notebook").content
+
+document = lxml.html.document_fromstring(data)
+
+for anchor in document.cssselect("#articles a"):
+    href = anchor.get("href")
+    print(href)
+```
+
+.small[
+```terminal
+/notebook/2014/django-pdf-rendering-pjax-and-session-activity
+/notebook/2012/django-heroku-nodejs-and-less-compiling-assets
+/notebook/2012/sentry-on-dotcloud
+/notebook/2012/virtualbox-guest-additions-on-ubuntu-server
+/notebook/2011/jquery-expandme-plugin
+/notebook/2011/chrome-extension-for-ai-class-forum
+```
+]
+
+---
+
+# lxml
+
+Przydatne biblioteki:
+
+- [cssselect](https://pythonhosted.org/cssselect/) - parsowanie i konwersja selektorów CSS3 do XPath 1.0
+
+```python
+from cssselect import GenericTranslator
+expr = GenericTranslator().css_to_xpath('#login > input.txt[name=user]')
+print(expr)
+
+"descendant-or-self::*[@id = 'login']/input[@class and contains(concat(' ',"
+"normalize-space(@class), ' '), ' txt ') and (@name = 'user')]"
+```
+
+- [scrapy](http://scrapy.org/) - screen scraping & web crawler
+
+- [pyquery](https://pythonhosted.org/pyquery/) - API wzorowane na jQuery do przetwarzania i modyfikacji XML/HTML
+
+---
+class: inverse center middle
+
+# dateutil
+
+---
+
+# dateutil
+
+- W Bibliotece Standardowej istnieje moduł ``datetime``
+
+```python
+>>> from datetime import datetime, timedelta
+>>> now = datetime.utcnow()
+>>> print(now)
+2014-06-12 16:31:11
+```
+
+--
+
+- Jednak funkcjonalność ograniczona jest do podstawowych operacji
+
+```python
+>>> print(now.year)
+2014
+
+>>> print(now + timedelta(days=30))
+2014-07-12 16:31:11
+
+>>> print(now.replace(month=12).date())
+2014-12-12
+
+>>> print((now.replace(month=12) - now).days)
+183
+```
+---
+class: very-short
+
+# dateutil
+
+
+[Python-dateutil](https://labix.org/python-dateutil) dodaje kilka niezbędnych funkcji do obliczania:
+
+- względnych dat (następny miesiąc, następny rok, następny poniedziałek)
+
+  ```python
+  # Czwartek za 3 tygodnie
+  >>> today + relativedelta(weeks=+3, weekday=TH)
+  2014-07-03
+  ```
+--
+
+- względnych różnic pomiędzy datami
+
+    ```python
+    # Ile czasu upłynęło od meczu na Wembley?
+    >>> relativedelta(today, datetime.date(1973, 11, 17))
+    relativedelta(years=+40, months=+6, days=+26)
+    ```
+--
+
+- dat na podstawie reguł powtarzalności (co drugi czwartek)
+
+    ```python
+    # Co drugi czwartek
+    >>> list(rrule(WEEKLY, byweekday=TH, interval=2, count=3, dtstart=datetime(2014,6,12)))
+    [datetime.datetime(2014, 6, 12, 0, 0),
+     datetime.datetime(2014, 6, 26, 0, 0),
+     datetime.datetime(2014, 7, 10, 0, 0)]
+    ```
+--
+
+- oraz obliczenie dnia Wielkanocy, parsowanie dat
+  z różnego rodzaju formatów tekstowych, konwersja pomiędzy strefami czasowymi
+  i kilka innych
+
+---
+
+# dateutil
+
+### Przykład
+
+datetime:
+
+```python
+>>> today = datetime.date.today()
+>>> months = 7
+>>> date = today.replace(today.month + months) \
+...    if today.month + months <= 12 \
+...       else today.replace(today.year + 1, (today.month + months) % 12)
+>>> print(date)
+2014-12-12
+```
+
+dateutil:
+
+```python
+>>> today + relativedelta(months=+7)
+2014-12-12
+```
+
+--
+
+*Btw. kto zauważył błąd w pierwszym przykładzie?*
+
+---
+
+# dateutil
+
+Przydatne biblioteki:
+
+- [pytz](https://pypi.python.org/pypi/pytz) - baza definicji stref czasowych, aktualnych oraz historycznych
+- [Delorean](http://delorean.readthedocs.org/en/latest/) - konwersja pomiędzy strefami czasowymi
+
+```python
+>>> d = Delorean()
+>>> d.shift("US/Eastern")
+Delorean(datetime=2014-06-12 18:30:38.102223-05:00, timezone=US/Eastern)
+>>> d.last_tuesday(2).midnight()
+datetime.datetime(2014, 6, 3, 0, 0, tzinfo="UTC")
+```
+
+- [FreezeGun](https://github.com/spulec/freezegun) - przydatne przy testowaniu kodu
+
+```python
+@freeze_time("2012-01-14")
+def test():
+    assert datetime.datetime.now() == datetime.datetime(2012, 01, 14)
+```
+
+---
+class: inverse middle center
+
+# Docopt
+
+---
+
+# Docopt
+
+- Załóżmy, że chcemy stworzyć program linii poleceń,
+  który będzie przyjmował następujące parametry:
+
+    ```bash
+    Usage:
+      example.py tcp <host> <port> [--timeout=<seconds>]
+      example.py serial <port> [--baud=9600] [--timeout=<seconds>]
+      example.py -h | --help | --version
+    ```
+
+--
+
+- getopt, optparse, argparse, ...
+
+   ```python
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("host", type=str, help="Host")
+    parser.add_argument("port", type=int, help="Port")
+    parser.add_argument("--baud", type=int, default=9600,
+                            help="Connection speed (default 9600)")
+    parser.add_argument('--version', action='version', version='%(prog)s 2.0')
+    ...
+    args = parser.parse_args()
+    print(args.timeout)
+    ```
+---
+
+# Docopt
+
+Z Docopt sprawa wygląda dużo prościej:
+
+```python
+"""
+Make connection.
+
+Usage:
+  example.py tcp <host> <port> [--timeout=<seconds>]
+  example.py serial <port> [--baud=9600] [--timeout=<seconds>]
+  example.py -h | --help | --version
+
+Options:
+  -h --help            Show this screen.
+  --version            Show version.
+  --timeout=<seconds>  Timeout.
+  --baud=9600          Connection speed (default 9600).
+"""
+
+from docopt import docopt
+
+if __name__ == '__main__':
+    arguments = docopt(__doc__, version='0.1.1rc')
+    print(arguments)
+```
+
+- [try.docopt.org](http://try.docopt.org/?doc=Make+connection.%0D%0A%0D%0AUsage%3A%0D%0A++example.py+tcp+%3Chost%3E+%3Cport%3E+%5B--timeout%3D%3Cseconds%3E%5D%0D%0A++example.py+serial+%3Cport%3E+%5B--baud%3D9600%5D+%5B--timeout%3D%3Cseconds%3E%5D%0D%0A++example.py+-h+%7C+--help+%7C+--version%0D%0A%0D%0AOptions%3A%0D%0A++-h+--help++++++++++++Show+this+screen.%0D%0A++--version++++++++++++Show+version.%0D%0A++--timeout%3D%3Cseconds%3E++Timeout.%0D%0A++--baud%3D9600++++++++++Connection+speed+%28default+9600%29.%0D%0A&argv=tcp+localhost+8000+--timeout%3D10+)
+
+---
+
+# Docopt
+
+Przydatne biblioteki:
+
+- [click](click.pocoo.org) - tworzenie programów linii poleceń za pomocą dekoratorów
+
+- [envoy](https://github.com/kennethreitz/envoy) - wywoływanie programów z kodu Pythona:
+
+    ```python
+    >>> import envoy
+    >>> r = envoy.run("uptime | cowsay")
+    >>> r.status_code
+    0
+    >>> print(r.std_out)
+     _______________________________________
+    /  12:23:06 up 126 days, 15:15, 1 user, \
+    \ load average: 0.07, 0.04, 0.05        /
+     ---------------------------------------
+            \   ^__^
+             \  (oo)\_______
+                (__)\       )\/\
+                    ||----w |
+                    ||     ||
+    ```
+
+- [colorama](https://pypi.python.org/pypi/colorama) - kolorowanie tekstu w terminalu
+
+---
+class: inverse middle center
+
+# Structlog
+
+---
+class: spacey
+
+# Structlog
+
+- Logowanie zdarzeń w wielu projektach staje się częścią złożonych systemów do gromadzenia,
+  indeksowania i przetwarzania zdarzeń w czasie rzeczywistym
+
+- Pliki logów powinny być w formacie czytelnym dla programów komputerowych
+
+- Kibana, Logstash, Graylog2, PaperTrail, Loggly, etc.
+
+---
+
+# Structlog
+
+- [Structlog](http://structlog.org) pozwala określić strukturę logów
+
+```python
+>>> from structlog import get_logger
+>>> log = get_logger()
+>>> log = log.bind(user='nigma', some_key=23)
+>>> log.info('user.logged_in', happy=True)
+'{"user": "nigma", "some_key": 23 , "happy": true, "event": "user.logged_in"}'
+```
+
+- Co jest łatwiejsze do przetwarzania niż:
+
+```python
+>>> logging.info("User %s logged in with email %s", user.pk, user.email)
+# INFO:root:User id 1 logged in with email joe@example.com
+```
+
+- Integruje się z istniejącymi bibliotekami (np. ``logging``)
+
+---
+class: inverse middle center
+
+# wrapt
+
+---
+class: middle center
+
+# Quiz
+
+Co można "udekorować" w Pythonie?
+
+```python
+@decorator
+def f(x):
+    pass
+```
+
+---
+# Quiz
+
+- funkcje
+
+```python
+@decorator
+def f(x):
+   pass
+```
+
+--
+
+- metody
+
+```python
+class X(object):
+
+    @decorator
+    def f(self, x):
+       pass
+```
+
+---
+
+# Quiz
+
+- metody statyczne
+
+```python
+class X(object):
+
+    @decorator
+    @staticmethod
+    def f(x):
+       pass
+```
+
+--
+
+- metody klasowe
+
+```python
+class X(object):
+
+    @decorator
+    @classmethod
+    def f(cls, x):
+       pass
+```
+
+---
+
+# Quiz
+
+- klasy
+
+```python
+@decorator
+class X(object):
+    pass
+```
+
+---
+
+# wrapt
+
+- Problem pojawia się, kiedy chcemy stworzyć dekorator, który będzie działał dla wszystkich wspomnianych przypadków
+
+- [Wrapt](http://wrapt.readthedocs.org/) ujednolica sposób tworzenia dekoratorów dla różnych typów funkcji/metod:
+
+    ```python
+    import wrapt
+
+    @wrapt.decorator
+    def pass_through(wrapped, instance, args, kwargs):
+        return wrapped(*args, **kwargs)
+
+    @pass_through
+    def function(x, y=None):
+        pass
+    ```
+
+    - ``wrapped`` - dekorowana klasa, funkcja, metoda, etc.
+
+    - ``instance`` - obiekt (``self`` -- dla metody) lub klasa (``cls`` -- dla metody klasowej)
+---
+
+# wrapt
+
+```python
+def synchronized(lock):
+    @wrapt.decorator
+    def _wrapper(wrapped, instance, args, kwargs):
+        with lock:
+            return wrapped(*args, **kwargs)
+    return _wrapper
+
+
+lock = threading.RLock()
+
+
+@synchronized(lock)
+def function():
+    pass
+
+
+class Class(object):
+
+    @synchronized(lock)
+    def function(self):
+        pass
+```
+
+---
+class: inverse middle center
+
+# Numba
+
+---
+class: spacey
+
+# Numba
+
+- Numba to kompilator Just-in-Time, który kompiluje kod Pythona do kodu maszynowego za pomocą LLVM
+
+- [numba.pydata.org](http://numba.pydata.org/)
+
+---
+# Numba
+
+Przykład:
+
+```python
+from numba import jit
+
+@jit
+def sum3d(arr):
+    M, N, K = arr.shape
+    result = 0
+    for i in range(M):
+        for j in range(N):
+            for k in range(K):
+                result += arr[i,j,k]
+    return result
+```
+---
+# Numba
+
+.center[
+## [Demo 1 >>](https://www.wakari.io/sharing/bundle/nigma/numba%20-%20demo)
+## [Demo 2 >>](https://www.wakari.io/sharing/bundle/nigma/numba%20-%20mandelbrot)
+]
+---
+
+# Numba
+
+Przydatne biblioteki:
+
+- [NumPy](http://www.numpy.org/) - wydajne tablicowe typy danych i operacje matematyczne
+- [SciPy](http://www.scipy.org/) - zbiór algorytmów numerycznych
+- [scikit-learn](http://scikit-learn.org/) - uczenie maszynowe
+- [Pandas](http://pandas.pydata.org/) - analiza i przetwarzanie danych
+- [iPython](http://ipython.org/) - interaktywna powłoka, notebook
+- [PyWavelets](http://www.pybytes.com/pywavelets/) - analiza falkowa
+
+---
+class: inverse middle center
+
+# Koniec
+
+---
+class: center middle inverse front last
+
+# [ThinkApps](http://thinkapps.com/)
+### [filip@thinkapps.com](mailto:filip@thinkapps.com)
+
+------------
+
+# [en.ig.ma](http://en.ig.ma/)
+### [en@ig.ma](mailto:en@ig.ma)
+
+</textarea>
+
+    <div id="slideshow"></div>
+    <script type="text/javascript">
+        var hljs = remark.highlighter.engine;
+    </script>
+    <script src="terminal.language.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(window).load(function() {
+            var slideshow = remark.create({
+                ratio: '4:3',
+                highlightStyle: 'monokai'
+            });
+            // extract the embedded styling from ansi spans
+            $('code.terminal .remark-code-line > span.hljs-ansi').replaceWith(function (i, x) {
+                return x.replace(/&lt;(\/?(\w+?).*?)&gt;/g, '<$1>').replace(/\[LT\]/g, '&lt;').replace(/\[GT\]/g, '&gt;')
+            });
+            $('a').attr('target', '_blank');
+        });
+    </script>
+</body>
+</html>
